@@ -1,9 +1,13 @@
 ---
-documentclass: ctexart
+documentclass: ctexbeamer
 CJKmainfont: WenQuanYi Micro Hei
 title: 关于选择 MPEG4 还是 H264 的调研报告
-author: wzy
 institute: USTC
+logo: images/logo.pdf
+aspectratio: 169
+theme: Berkeley
+colortheme: spruce
+navigation: horizontal
 ---
 
 ## 条件
@@ -11,109 +15,143 @@ institute: USTC
 为了公平起见，mpeg4 (codec 使用 libxvid) 和 h264 (codec 使用 libx264) 均设置为：
 
 1. 相邻 2 个 P/I 帧间插入 3 个 B 帧
-2. 平均比特率为 300k/600k, 误差不超过 2k
+2. 比特率为 300k/600k, 误差不超过 2k
 
 ## 比较
 
 ### 客观结果
 
-从 MSE 和 PSNR 的结果来看，h264 与 mpeg4 差别不大。例如下表是 `crew_cif.yuv` 以
-mpeg4 和 h264 编码后的前 5 帧的比较结果。比如前 3 帧 mpeg4 比 h264 好一点，后 2
-帧 mpeg4 比 h264 差一点。
+从 MSE 和 PSNR 的平均结果来看，h264 比 mpeg4 好一点。例如下表中^m^代表 mpeg4,
+^h^代表 h264。MSE，PSNR 分别是负指标和正指标。下表代表在 Y，U，V 分别计算而不出
+取平均的结果。
 
-```
-n:1 mse_avg:9.45 mse_y:11.95 mse_u:3.88 mse_v:5.03 psnr_avg:38.38 psnr_y:37.36 psnr_u:42.25 psnr_v:41.11
-n:2 mse_avg:13.19 mse_y:16.05 mse_u:7.08 mse_v:7.89 psnr_avg:36.93 psnr_y:36.08 psnr_u:39.63 psnr_v:39.16
-n:3 mse_avg:11.52 mse_y:14.65 mse_u:4.66 mse_v:5.86 psnr_avg:37.52 psnr_y:36.47 psnr_u:41.44 psnr_v:40.45
-n:4 mse_avg:37.09 mse_y:51.05 mse_u:6.51 mse_v:11.83 psnr_avg:32.44 psnr_y:31.05 psnr_u:40.00 psnr_v:37.40
-n:5 mse_avg:67.65 mse_y:93.97 mse_u:9.07 mse_v:20.94 psnr_avg:29.83 psnr_y:28.40 psnr_u:38.55 psnr_v:34.92
-```
+## 比较 (300k)
 
-```
-n:1 mse_avg:12.47 mse_y:16.46 mse_u:3.76 mse_v:5.22 psnr_avg:37.17 psnr_y:35.97 psnr_u:42.38 psnr_v:40.95
-n:2 mse_avg:25.15 mse_y:32.76 mse_u:9.99 mse_v:9.88 psnr_avg:34.13 psnr_y:32.98 psnr_u:38.14 psnr_v:38.19
-n:3 mse_avg:14.24 mse_y:18.97 mse_u:4.01 mse_v:5.55 psnr_avg:36.60 psnr_y:35.35 psnr_u:42.10 psnr_v:40.69
-n:4 mse_avg:14.79 mse_y:19.57 mse_u:4.42 mse_v:6.08 psnr_avg:36.43 psnr_y:35.22 psnr_u:41.68 psnr_v:40.29
-n:5 mse_avg:15.12 mse_y:20.19 mse_u:4.22 mse_v:5.72 psnr_avg:36.34 psnr_y:35.08 psnr_u:41.88 psnr_v:40.56
-```
+| 文件名      | MSE    | MSE~Y~ | MSE~U~ | MSE~V~ | PSNR  | PSNR~Y~ | PSNR~U~ | PSNR~V~ |
+|-------------|--------|--------|--------|--------|-------|---------|---------|---------|
+| crew^m^     | 271.59 | 371.97 | 47.48  | 94.19  | 24.6  | 23.26   | 32.27   | 29.2    |
+| crew^h^     | 21.46  | 27.63  | 7.61   | 10.6   | 34.99 | 33.89   | 39.48   | 38.04   |
+| deadline^m^ | 109.76 | 157.65 | 15.18  | 12.81  | 28.84 | 27.31   | 36.91   | 37.64   |
+| deadline^h^ | 5.74   | 7.39   | 2.58   | 2.29   | 41.0  | 39.96   | 44.22   | 44.77   |
+| harbour^m^  | 302.46 | 450.26 | 8.73   | 4.97   | 24.06 | 22.34   | 38.73   | 41.18   |
+| harbour^h^  | 46.72  | 67.76  | 5.55   | 3.72   | 31.51 | 29.9    | 40.7    | 42.45   |
+| pamphlet^m^ | 134.0  | 196.55 | 12.06  | 5.77   | 32.95 | 31.43   | 41.52   | 43.7    |
+| pamphlet^h^ | 2.21   | 2.77   | 1.32   | 0.9    | 44.99 | 44.1    | 47.07   | 48.66   |
+
+## 比较 (300k)
+
+| 文件名      | MSE    | MSE~Y~ | MSE~U~ | MSE~V~ | PSNR  | PSNR~Y~ | PSNR~U~ | PSNR~V~ |
+|-------------|--------|--------|--------|--------|-------|---------|---------|---------|
+| paris^m^    | 180.86 | 255.22 | 35.34  | 28.97  | 25.8  | 24.33   | 32.71   | 33.6    |
+| paris^h^    | 13.78  | 18.01  | 5.4    | 5.22   | 37.18 | 36.07   | 40.99   | 41.14   |
+| silent^m^   | 108.5  | 157.04 | 12.8   | 10.01  | 28.38 | 26.8    | 37.28   | 38.34   |
+| silent^h^   | 5.74   | 7.45   | 2.53   | 2.09   | 40.85 | 39.74   | 44.27   | 45.09   |
+| students^m^ | 45.39  | 63.01  | 10.56  | 9.76   | 31.95 | 30.56   | 38.07   | 38.44   |
+| students^h^ | 4.4    | 5.43   | 2.46   | 2.22   | 42.03 | 41.15   | 44.43   | 44.88   |
+
+## 比较 (600k)
+
+| 文件名      | MSE    | MSE~Y~ | MSE~U~ | MSE~V~ | PSNR  | PSNR~Y~ | PSNR~U~ | PSNR~V~ |
+|-------------|--------|--------|--------|--------|-------|---------|---------|---------|
+| crew^m^     | 277.31 | 380.52 | 47.17  | 94.6   | 24.53 | 23.18   | 32.39   | 29.25   |
+| crew^h^     | 10.88  | 13.47  | 5.08   | 6.28   | 37.96 | 37.03   | 41.26   | 40.35   |
+| deadline^m^ | 101.12 | 147.14 | 9.74   | 8.44   | 29.57 | 27.96   | 39.39   | 39.95   |
+| deadline^h^ | 2.96   | 3.76   | 1.48   | 1.26   | 43.72 | 42.73   | 46.56   | 47.27   |
+| harbour^m^  | 282.41 | 420.76 | 7.17   | 4.24   | 24.63 | 22.91   | 39.6    | 41.89   |
+| harbour^h^  | 24.8   | 35.42  | 4.24   | 2.88   | 34.29 | 32.75   | 41.88   | 43.57   |
+| pamphlet^m^ | 131.73 | 193.34 | 11.56  | 5.45   | 34.0  | 32.56   | 42.38   | 44.66   |
+| pamphlet^h^ | 1.5    | 1.78   | 1.09   | 0.79   | 46.56 | 45.85   | 47.95   | 49.25   |
+
+## 比较 (600k)
+
+| 文件名      | MSE    | MSE~Y~ | MSE~U~ | MSE~V~ | PSNR  | PSNR~Y~ | PSNR~U~ | PSNR~V~ |
+|-------------|--------|--------|--------|--------|-------|---------|---------|---------|
+| paris^m^    | 159.96 | 228.98 | 24.22  | 19.66  | 26.5  | 24.97   | 34.39   | 35.39   |
+| paris^h^    | 5.57   | 7.07   | 2.62   | 2.51   | 41.05 | 40.06   | 44.1    | 44.32   |
+| silent^m^   | 104.59 | 152.45 | 9.79   | 7.96   | 28.61 | 26.99   | 38.53   | 39.44   |
+| silent^h^   | 2.56   | 3.24   | 1.29   | 1.09   | 44.3  | 43.3    | 47.16   | 47.88   |
+| students^m^ | 40.26  | 57.01  | 7.08   | 6.45   | 32.68 | 31.19   | 40.01   | 40.51   |
+| students^h^ | 2.34   | 2.87   | 1.36   | 1.19   | 44.68 | 43.82   | 46.94   | 47.5    |
+
+## 比较
 
 ### 主观结果
 
-PSNR 只能衡量失真的程度，并不与人眼的观察感受完全一致。例如图 [mpeg4](#mpeg4)
-和 [h264](#h264) 是 `crew_cif.yuv` 以 mpeg4 和 h264 编码后的最后一帧的图像。
+PSNR 只能衡量失真的程度，并不与人眼的观察感受完全一致。例如下图是一些测试视频以
+mpeg4 和 h264 编码后的最后一帧的图像。
 
-![mpeg4](images/mpeg4.png "mpeg4"){#mpeg4}
+## 比较 (300k)
 
-![h264](images/h264.png "h264"){#h264}
+![mpeg4/300k/crew](images/mpeg4/300k/crew.png "mpeg4"){width=6cm}
+![h264/300k/crew](images/h264/300k/crew.png "h264"){width=6cm}
+
+## 比较 (300k)
+
+![mpeg4/300k/deadline](images/mpeg4/300k/deadline.png "mpeg4"){width=6cm}
+![h264/300k/deadline](images/h264/300k/deadline.png "h264"){width=6cm}
+
+## 比较 (300k)
+
+![mpeg4/300k/harbour](images/mpeg4/300k/harbour.png "mpeg4"){width=6cm}
+![h264/300k/harbour](images/h264/300k/harbour.png "h264"){width=6cm}
+
+## 比较 (300k)
+
+![mpeg4/300k/pamphlet](images/mpeg4/300k/pamphlet.png "mpeg4"){width=6cm}
+![h264/300k/pamphlet](images/h264/300k/pamphlet.png "h264"){width=6cm}
+
+## 比较 (300k)
+
+![mpeg4/300k/paris](images/mpeg4/300k/paris.png "mpeg4"){width=6cm}
+![h264/300k/paris](images/h264/300k/paris.png "h264"){width=6cm}
+
+## 比较 (300k)
+
+![mpeg4/300k/silent](images/mpeg4/300k/silent.png "mpeg4"){width=6cm}
+![h264/300k/silent](images/h264/300k/silent.png "h264"){width=6cm}
+
+## 比较 (300k)
+
+![mpeg4/300k/students](images/mpeg4/300k/students.png "mpeg4"){width=6cm}
+![h264/300k/students](images/h264/300k/students.png "h264"){width=6cm}
+
+## 比较 (600k)
+
+![mpeg4/600k/crew](images/mpeg4/600k/crew.png "mpeg4"){width=6cm}
+![h264/600k/crew](images/h264/600k/crew.png "h264"){width=6cm}
+
+## 比较 (600k)
+
+![mpeg4/600k/deadline](images/mpeg4/600k/deadline.png "mpeg4"){width=6cm}
+![h264/600k/deadline](images/h264/600k/deadline.png "h264"){width=6cm}
+
+## 比较 (600k)
+
+![mpeg4/600k/harbour](images/mpeg4/600k/harbour.png "mpeg4"){width=6cm}
+![h264/600k/harbour](images/h264/600k/harbour.png "h264"){width=6cm}
+
+## 比较 (600k)
+
+![mpeg4/600k/pamphlet](images/mpeg4/600k/pamphlet.png "mpeg4"){width=6cm}
+![h264/600k/pamphlet](images/h264/600k/pamphlet.png "h264"){width=6cm}
+
+## 比较 (600k)
+
+![mpeg4/600k/paris](images/mpeg4/600k/paris.png "mpeg4"){width=6cm}
+![h264/600k/paris](images/h264/600k/paris.png "h264"){width=6cm}
+
+## 比较 (600k)
+
+![mpeg4/600k/silent](images/mpeg4/600k/silent.png "mpeg4"){width=6cm}
+![h264/600k/silent](images/h264/600k/silent.png "h264"){width=6cm}
+
+## 比较 (600k)
+
+![mpeg4/600k/students](images/mpeg4/600k/students.png "mpeg4"){width=6cm}
+![h264/600k/students](images/h264/600k/students.png "h264"){width=6cm}
+
+## 比较
 
 ### 结论
 
-建议更换。
-
-## 平均比特率
-
-```
-mpeg4/300k/crew_cif.mp4           300 kbps
-mpeg4/300k/deadline_cif_300.mp4   300 kbps
-mpeg4/300k/harbour_cif.mp4        300 kbps
-mpeg4/300k/pamphlet_cif_300.mp4   300 kbps
-mpeg4/300k/paris_cif_300.mp4      301 kbps
-mpeg4/300k/silent_cif_300.mp4     300 kbps
-mpeg4/300k/students_cif_300.mp4   300 kbps
-mpeg4/600k/crew_cif.mp4           600 kbps
-mpeg4/600k/deadline_cif_300.mp4   600 kbps
-mpeg4/600k/harbour_cif.mp4        600 kbps
-mpeg4/600k/pamphlet_cif_300.mp4   602 kbps
-mpeg4/600k/paris_cif_300.mp4      599 kbps
-mpeg4/600k/silent_cif_300.mp4     600 kbps
-mpeg4/600k/students_cif_300.mp4   600 kbps
-h264/300k/crew_cif.mp4            300 kbps
-h264/300k/deadline_cif_300.mp4    301 kbps
-h264/300k/harbour_cif.mp4         300 kbps
-h264/300k/pamphlet_cif_300.mp4    301 kbps
-h264/300k/paris_cif_300.mp4       301 kbps
-h264/300k/silent_cif_300.mp4      300 kbps
-h264/300k/students_cif_300.mp4    301 kbps
-h264/600k/crew_cif.mp4            600 kbps
-h264/600k/deadline_cif_300.mp4    600 kbps
-h264/600k/harbour_cif.mp4         600 kbps
-h264/600k/pamphlet_cif_300.mp4    600 kbps
-h264/600k/paris_cif_300.mp4       599 kbps
-h264/600k/silent_cif_300.mp4      600 kbps
-h264/600k/students_cif_300.mp4    600 kbps
-```
-
-## 目录结构
-
-```
-.
-├── docs  // 标准参考文件
-│   └── *.pdf
-├── get-psnr.sh  // 运行此脚本可重新生成所有视频和日志
-├── h264  // 生成的 h264 格式的视频
-│   ├── 300k
-│   │   └── *.mp4
-│   └── 600k
-│       └── *.mp4
-├── logs  // 记录了所有生成视频的 MSE 和 PSNR 的日志
-│   ├── h264
-│   │   ├── 300k
-│   │   │   └── *.log
-│   │   └── 600k
-│   │       └── *.log
-│   └── mpeg4
-│       ├── 300k
-│       │   └── *.log
-│       └── 600k
-│           └── *.log
-├── mpeg4  // 生成的 mpeg4 格式的视频
-│   ├── 300k
-│   │   └── *.mp4
-│   └── 600k
-│       └── *.mp4
-├── README.md  // 本文档
-└── yuv  // 原始的 yuv 格式的视频
-    └── *.yuv
-
-15 directories, 67 files
-```
+注意到 h264 主观上比 mpeg4 质量更好，建议更换为 h264 。
