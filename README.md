@@ -1,6 +1,5 @@
 ---
 documentclass: ctexbeamer
-CJKmainfont: WenQuanYi Micro Hei
 title: MPEG4与H.264主客观性能对比
 institute: USTC
 logo: images/logo.pdf
